@@ -8,24 +8,24 @@ class TestNetworkManager:
 
     def test_filter_heroes(self):
         heroes = [
-            {"id":  1, "appearance": {"gender": "male"},    "work": {"occupation": "true",  "base": "true"}},
-            {"id":  2, "appearance": {"gender": "male"},    "work": {"occupation": "-",     "base": "-"}},
-            {"id":  3, "appearance": {"gender": "male"},    "work": {"occupation": "-",     "base": "true"}},
-            {"id":  4, "appearance": {"gender": "male"},    "work": {"occupation": "true",  "base": "-"}},
-            {"id":  5, "appearance": {"gender": "female"},  "work": {"occupation": "true",  "base": "true"}},
-            {"id":  6, "appearance": {"gender": "female"},  "work": {"occupation": "-",     "base": "-"}},
-            {"id":  7, "appearance": {"gender": "female"},  "work": {"occupation": "-",     "base": "true"}},
-            {"id":  8, "appearance": {"gender": "female"},  "work": {"occupation": "true",  "base": "-"}},
-            {"id":  9, "appearance": {"gender": "-"},       "work": {"occupation": "true",  "base": "true"}},
-            {"id": 10, "appearance": {"gender": "-"},       "work": {"occupation": "-",     "base": "-"}},
-            {"id": 11, "appearance": {"gender": "-"},       "work": {"occupation": "-",     "base": "true"}},
-            {"id": 12, "appearance": {"gender": "-"},       "work": {"occupation": "true",  "base": "-"}},
-            {"id": 13},
-            {"id": 14, "appearance": {}},
-            {"id": 15, "appearance": {"gender": "-"}},
-            {"id": 12, "work": {}},
-            {"id": 12, "work": {"base": "-"}},
-            {"id": 12, "work": {"occupation": "true"}},
+            {'id':  1, 'appearance': {'gender': 'male'},    'work': {'occupation': 'true',  'base': 'true'}},
+            {'id':  2, 'appearance': {'gender': 'male'},    'work': {'occupation': '-',     'base': '-'}},
+            {'id':  3, 'appearance': {'gender': 'male'},    'work': {'occupation': '-',     'base': 'true'}},
+            {'id':  4, 'appearance': {'gender': 'male'},    'work': {'occupation': 'true',  'base': '-'}},
+            {'id':  5, 'appearance': {'gender': 'female'},  'work': {'occupation': 'true',  'base': 'true'}},
+            {'id':  6, 'appearance': {'gender': 'female'},  'work': {'occupation': '-',     'base': '-'}},
+            {'id':  7, 'appearance': {'gender': 'female'},  'work': {'occupation': '-',     'base': 'true'}},
+            {'id':  8, 'appearance': {'gender': 'female'},  'work': {'occupation': 'true',  'base': '-'}},
+            {'id':  9, 'appearance': {'gender': '-'},       'work': {'occupation': 'true',  'base': 'true'}},
+            {'id': 10, 'appearance': {'gender': '-'},       'work': {'occupation': '-',     'base': '-'}},
+            {'id': 11, 'appearance': {'gender': '-'},       'work': {'occupation': '-',     'base': 'true'}},
+            {'id': 12, 'appearance': {'gender': '-'},       'work': {'occupation': 'true',  'base': '-'}},
+            {'id': 13},
+            {'id': 14, 'appearance': {}},
+            {'id': 15, 'appearance': {'gender': '-'}},
+            {'id': 12, 'work': {}},
+            {'id': 12, 'work': {'base': '-'}},
+            {'id': 12, 'work': {'occupation': 'true'}},
         ]
         nm = NetworkManager()  
         assert nm.filter_heroes(heroes, 'male', True) ==       [{'id':  1, 'appearance': {'gender': 'male'},    'work': {'occupation': 'true',  'base': 'true'}},
@@ -54,11 +54,11 @@ class TestNetworkManager:
     def test_find_max(self):
         nm = NetworkManager()
         heroes = [
-            {"id":  1, "appearance": {"gender": "male",  "height": ["-", "99 cm"]},      "work": {"occupation": "true", "base": "true"}},
-            {"id":  2, "appearance": {"gender": "male",  "height": ["-", "1 meters"]},   "work": {"occupation": "true", "base": "true"}},
-            {"id":  3, "appearance": {"gender": "male",  "height": ["-", "2 kg"]},       "work": {"occupation": "true", "base": "true"}},
-            {"id":  4},
-            {"id":  5, "appearance": {"gender": "male",  "height": []},                  "work": {"occupation": "true", "base": "true"}},
+            {'id':  1, 'appearance': {'gender': 'male',  'height': ['-', '99 cm']},      'work': {'occupation': 'true', 'base': 'true'}},
+            {'id':  2, 'appearance': {'gender': 'male',  'height': ['-', '1 meters']},   'work': {'occupation': 'true', 'base': 'true'}},
+            {'id':  3, 'appearance': {'gender': 'male',  'height': ['-', '2 kg']},       'work': {'occupation': 'true', 'base': 'true'}},
+            {'id':  4},
+            {'id':  5, 'appearance': {'gender': 'male',  'height': []},                  'work': {'occupation': 'true', 'base': 'true'}},
         ]
         assert nm.find_max(heroes) == {'id': 2, 'appearance': {'gender': 'male', 'height': ['-', '1 meters']}, 'work': {'occupation': 'true', 'base': 'true'}}
             
@@ -100,3 +100,4 @@ class TestNetworkManager:
 
         hero = nm.get_the_tallest_hero('not valid gender', False)
         assert hero is None
+
