@@ -62,7 +62,7 @@ class TestNetworkManager:
         ]
         assert nm.find_max(heroes) == {'id': 2, 'appearance': {'gender': 'male', 'height': ['-', '1 meters']}, 'work': {'occupation': 'true', 'base': 'true'}}
             
-'''
+
     def test_get_the_tallest_hero(self):
         nm = NetworkManager()
         hero = nm.get_the_tallest_hero('male', True)
@@ -100,11 +100,3 @@ class TestNetworkManager:
 
         hero = nm.get_the_tallest_hero('not valid gender', False)
         assert hero is None
-
-'''
-
-
-
-
-
-
