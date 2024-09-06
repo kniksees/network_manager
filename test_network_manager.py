@@ -4,7 +4,9 @@ class TestNetworkManager:
 
     def test_get_request(self):
         nm = NetworkManager()
-        assert nm.get_request('https://akabab.github.io/superhero-api/api/all.json') != ''
+        assert nm.get_request('https://akabab.github.io/superhero-api/api/all.json') is not None
+        assert nm.get_request('invalid url') is None
+
 
     def test_filter_heroes(self):
         heroes = [
@@ -100,4 +102,4 @@ class TestNetworkManager:
 
         hero = nm.get_the_tallest_hero('not valid gender', False)
         assert hero is None
-
+    

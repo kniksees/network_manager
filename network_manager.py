@@ -5,7 +5,12 @@ import json
 class NetworkManager:
    
     def get_request(self, url):
-        return requests.get(url).json()
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.json()  
+        except requests.exceptions.RequestException as e:
+            return None
     
     def filter_heroes(self, heroes, gender, has_work):
         filtered_heroes = [
