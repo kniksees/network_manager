@@ -90,8 +90,10 @@ class TestNetworkManager:
     @pytest.mark.parametrize(
     "heroes_data, expected_result",
     [
-        (MOCK_FILTERED_HEROES_DATA, {"id": 2, "appearance": {"gender": "male", "height": ["-", "1 meters"]}, "work": {"occupation": "-",  "base": "-"}}),
-        ([], None),
+        (MOCK_FILTERED_HEROES_DATA,     {"id":  2, "appearance": {"gender": "male",     "height": ["-", "1 meters"]},   "work": {"occupation": "-",     "base": "-"}}),
+        (MOCK_SAME_HEROES_DATA,         {"id":  1, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}),
+        (MOCK_ONE_ELEMENT_HEROES_DATA,  {"id":  1, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}),
+        (MOCK_EMPTY_HEROES_DATA,        None),
     ])   
     def test_find_max(self, network_manager, heroes_data, expected_result):
         assert network_manager.find_max(heroes_data) == expected_result
