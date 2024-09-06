@@ -42,7 +42,7 @@ class TestNetworkManager:
 
     @pytest.fixture
     def network_manager(self):
-        return NetworkManager("https://example.com")
+        return NetworkManager("https://akabab.github.io/superhero-api/api/all.json")
     
     @allure.story("Тест функции get_the_tallest_hero с моками")
     @pytest.mark.parametrize(
@@ -74,6 +74,29 @@ class TestNetworkManager:
                     else:
                         with allure.step(f"Результат: {result["id"]}"):
                             assert result["id"] == expected_hero_id
+
+    @allure.story("Тест функции get_the_tallest_hero с api")
+    @pytest.mark.parametrize(
+    "gender, has_work, expected_hero_id",
+    [
+        ("male",                False,  574),  
+        ("male",                True,   728),
+        ("female",              False,  42),
+        ("female",              True,   716),
+        ("-",                   False,  287),
+        ("-",                   True,   409),
+        ("nonexistent_gender",  False,  None),
+        ("nonexistent_gender",  True,   None),
+    ])   
+    def test_get_the_tallest_hero_with_api(self, network_manager, gender, has_work, expected_hero_id):
+        with allure.step(f"Пол: {gender}, работа: {has_work}, ожидаемый id: {expected_hero_id}"):
+            result = network_manager.get_the_tallest_hero(gender, has_work)
+            if expected_hero_id is None:
+                with allure.step(f"Результат: {result}"):
+                    assert result is None
+            else:
+                with allure.step(f"Результат: {result["id"]}"):
+                    assert result["id"] == expected_hero_id
                             
 
     @allure.story("Тест функции filter_heroes с моками")
@@ -121,7 +144,8 @@ class TestNetworkManager:
                 mock_response.status_code = 200
                 mock_response.json.return_value = mock_data
                 result = network_manager.get_request()
-                assert result == mock_data
+                with allure.step(f"Результат: {result}"):
+                    assert result == mock_data
 
     @allure.story("Тест функции get_request с моками, ошибка сервера")
     def test_get_request_server_error_with_mock(self, network_manager):
@@ -131,7 +155,8 @@ class TestNetworkManager:
                 mock_response.status_code = 500
                 mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError
                 result = network_manager.get_request()
-                assert result is None
+                with allure.step(f"Результат: {result}"):
+                    assert result is None
 
     @allure.story("Тест функции get_request с моками, ошибка соединения")
     def test_get_request_connection_error_with_mock(self, network_manager):
@@ -139,7 +164,8 @@ class TestNetworkManager:
             with patch("requests.get") as mock_get:
                 mock_get.side_effect = requests.exceptions.ConnectionError
                 result = network_manager.get_request()
-                assert result is None
+                with allure.step(f"Результат: {result}"):
+                    assert result is None
 
     @allure.story("Тест функции get_request с моками, не JSON в ответе")
     def test_get_request_invalid_json_with_mock(self, network_manager):
@@ -149,7 +175,8 @@ class TestNetworkManager:
                 mock_response.status_code = 200
                 mock_response.json.side_effect = ValueError("Invalid JSON")
                 result = network_manager.get_request()
-                assert result is None
+                with allure.step(f"Результат: {result}"):
+                    assert result is None
 
 
     
