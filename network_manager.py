@@ -1,15 +1,14 @@
 import requests
 import json
 
-
 class NetworkManager:
    
     def get_request(self, url):
         try:
             response = requests.get(url)
             response.raise_for_status()
-            return response.json()  
-        except requests.exceptions.RequestException as e:
+            return response.json()
+        except (requests.exceptions.RequestException, ValueError) as e:
             return None
     
     def filter_heroes(self, heroes, gender, has_work):
