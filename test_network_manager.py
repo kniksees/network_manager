@@ -55,7 +55,6 @@ class TestNetworkManager:
             else:
                 assert result["id"] == expected_hero_id
 
-
     @pytest.mark.parametrize(
     "gender, has_work, expected_result",
     [
@@ -87,7 +86,7 @@ class TestNetworkManager:
     def test_get_request_success(self, network_manager):
         url = "https://example.com"
         mock_data = {"key": "value"}
-        with patch('requests.get') as mock_get:
+        with patch("requests.get") as mock_get:
             mock_response = mock_get.return_value
             mock_response.status_code = 200
             mock_response.json.return_value = mock_data
@@ -96,7 +95,7 @@ class TestNetworkManager:
 
     def test_get_request_server_error(self, network_manager):
         url = "https://example.com"
-        with patch('requests.get') as mock_get:
+        with patch("requests.get") as mock_get:
             mock_response = mock_get.return_value
             mock_response.status_code = 500
             mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError
@@ -105,14 +104,14 @@ class TestNetworkManager:
 
     def test_get_request_connection_error(self, network_manager):
         url = "https://example.com"
-        with patch('requests.get') as mock_get:
+        with patch("requests.get") as mock_get:
             mock_get.side_effect = requests.exceptions.ConnectionError
             result = network_manager.get_request(url)
             assert result is None
 
     def test_get_request_invalid_json(self, network_manager):
         url = "https://example.com"
-        with patch('requests.get') as mock_get:
+        with patch("requests.get") as mock_get:
             mock_response = mock_get.return_value
             mock_response.status_code = 200
             mock_response.json.side_effect = ValueError("Invalid JSON")
