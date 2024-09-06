@@ -13,7 +13,7 @@ MOCK_HEROES_DATA = [
     {"id":  7,                                                                      "work": {"occupation": "true",  "base": "true"}},
     {"id":  8, "appearance": {"gender": "-",        "height": ["-", "1 meters"]}},
     {"id":  9, "appearance": {"gender": "-",        "height": []}},
-    {"id": 10, "appearance": {"gender": "-",        "height": ["-", "1 kg"]},        "work": {"occupation": "true",  "base": "true"}},
+    {"id": 10, "appearance": {"gender": "-",        "height": ["-", "1 kg"]},       "work": {"occupation": "true",  "base": "true"}},
     ]
 
 MOCK_FILTERED_HEROES_DATA = [
@@ -59,13 +59,13 @@ class TestNetworkManager:
     @pytest.mark.parametrize(
     "gender, has_work, expected_result",
     [
-        ("male",                False,  [{"id":  1, "appearance": {"gender": "male",    "height": ["-", "99 cm"]},"work": {"occupation": "-",  "base": "-"}}]),  
-        ("male",                True,   [{"id":  2, "appearance": {"gender": "male",    "height": ["-", "1 meters"]}, "work": {"occupation": "true",  "base": "true"}}]),
-        ("female",              False,  [{"id":  3, "appearance": {"gender": "female",  "height": ["-", "99 cm"]}, "work": {"occupation": "-",  "base": "-"}}]),
-        ("female",              True,   [{"id":  4, "appearance": {"gender": "female",  "height": ["-", "1 meters"]}, "work": {"occupation": "true",  "base": "true"}}]),
-        ("-",                   False,  [{"id":  5, "appearance": {"gender": "-",       "height": ["-", "99 cm"]}, "work": {"occupation": "-",  "base": "-"}}]),
-        ("-",                   True,   [{"id":  6, "appearance": {"gender": "-",       "height": ["-", "1 meters"]}, "work": {"occupation": "true",  "base": "true"}},
-                                         {"id": 10, "appearance": {"gender": "-",       "height": ["-", "1 kg"]},"work": {"occupation": "true",  "base": "true"}}]),
+        ("male",                False,  [{"id":  1, "appearance": {"gender": "male",    "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}]),  
+        ("male",                True,   [{"id":  2, "appearance": {"gender": "male",    "height": ["-", "1 meters"]},   "work": {"occupation": "true",  "base": "true"}}]),
+        ("female",              False,  [{"id":  3, "appearance": {"gender": "female",  "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}]),
+        ("female",              True,   [{"id":  4, "appearance": {"gender": "female",  "height": ["-", "1 meters"]},   "work": {"occupation": "true",  "base": "true"}}]),
+        ("-",                   False,  [{"id":  5, "appearance": {"gender": "-",       "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}]),
+        ("-",                   True,   [{"id":  6, "appearance": {"gender": "-",       "height": ["-", "1 meters"]},   "work": {"occupation": "true",  "base": "true"}},
+                                         {"id": 10, "appearance": {"gender": "-",       "height": ["-", "1 kg"]},       "work": {"occupation": "true",  "base": "true"}}]),
         ("nonexistent_gender",  False,  []),
         ("nonexistent_gender",  True,   []),
     ])   
@@ -78,7 +78,6 @@ class TestNetworkManager:
     [
         (MOCK_FILTERED_HEROES_DATA, {"id": 2, "appearance": {"gender": "male", "height": ["-", "1 meters"]}, "work": {"occupation": "-",  "base": "-"}}),
         ([], None),
-
     ])   
     def test_find_max(self, network_manager, heroes_data, expected_result):
         assert network_manager.find_max(heroes_data) == expected_result
