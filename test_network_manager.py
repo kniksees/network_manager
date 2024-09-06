@@ -16,6 +16,18 @@ MOCK_HEROES_DATA = [
     {"id": 10, "appearance": {"gender": "-",        "height": ["-", "1 kg"]},       "work": {"occupation": "true",  "base": "true"}},
     ]
 
+MOCK_EMPTY_HEROES_DATA = []
+
+MOCK_SAME_HEROES_DATA = [
+    {"id":  1, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}},
+    {"id":  2, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}},
+    {"id":  3, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}},
+    ]
+
+MOCK_ONE_ELEMENT_HEROES_DATA = [
+    {"id":  1, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}},
+    ]
+
 MOCK_FILTERED_HEROES_DATA = [
     {"id":  1, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}},
     {"id":  2, "appearance": {"gender": "male",     "height": ["-", "1 meters"]},   "work": {"occupation": "-",     "base": "-"}},
@@ -29,25 +41,28 @@ class TestNetworkManager:
 
     @pytest.fixture
     def network_manager(self):
-        return NetworkManager()
+        return NetworkManager("https://example.com")
     
     @pytest.mark.parametrize(
-    "gender, has_work, expected_hero_id",
+    "gender, has_work, expected_hero_id, heroes_data",
     [
-        ("male",                False,  1),  
-        ("male",                True,   2),
-        ("female",              False,  3),
-        ("female",              True,   4),
-        ("-",                   False,  5),
-        ("-",                   True,   6),
-        ("nonexistent_gender",  False,  None),
-        ("nonexistent_gender",  True,   None),
+        ("male",                False,  1,      MOCK_HEROES_DATA),  
+        ("male",                True,   2,      MOCK_HEROES_DATA),
+        ("female",              False,  3,      MOCK_HEROES_DATA),
+        ("female",              True,   4,      MOCK_HEROES_DATA),
+        ("-",                   False,  5,      MOCK_HEROES_DATA),
+        ("-",                   True,   6,      MOCK_HEROES_DATA),
+        ("nonexistent_gender",  False,  None,   MOCK_HEROES_DATA),
+        ("nonexistent_gender",  True,   None,   MOCK_HEROES_DATA),
+        ("male",                False,  None,   MOCK_EMPTY_HEROES_DATA),  
+        ("male",                False,  1,      MOCK_SAME_HEROES_DATA),  
+        ("male",                False,  1,      MOCK_ONE_ELEMENT_HEROES_DATA),  
     ])   
-    def test_get_the_tallest_hero(self, network_manager, gender, has_work, expected_hero_id):
+    def test_get_the_tallest_hero(self, network_manager, gender, has_work, expected_hero_id, heroes_data):
         with patch("requests.get") as mock_get:
             mock_response = mock_get.return_value
             mock_response.status_code = 200
-            mock_response.json.return_value = MOCK_HEROES_DATA
+            mock_response.json.return_value = heroes_data
 
             result = network_manager.get_the_tallest_hero(gender, has_work)
             if expected_hero_id is None:
@@ -84,38 +99,34 @@ class TestNetworkManager:
 
 
     def test_get_request_success(self, network_manager):
-        url = "https://example.com"
         mock_data = {"key": "value"}
         with patch("requests.get") as mock_get:
             mock_response = mock_get.return_value
             mock_response.status_code = 200
             mock_response.json.return_value = mock_data
-            result = network_manager.get_request(url)
+            result = network_manager.get_request()
             assert result == mock_data
 
     def test_get_request_server_error(self, network_manager):
-        url = "https://example.com"
         with patch("requests.get") as mock_get:
             mock_response = mock_get.return_value
             mock_response.status_code = 500
             mock_response.raise_for_status.side_effect = requests.exceptions.HTTPError
-            result = network_manager.get_request(url)
+            result = network_manager.get_request()
             assert result is None
 
     def test_get_request_connection_error(self, network_manager):
-        url = "https://example.com"
         with patch("requests.get") as mock_get:
             mock_get.side_effect = requests.exceptions.ConnectionError
-            result = network_manager.get_request(url)
+            result = network_manager.get_request()
             assert result is None
 
     def test_get_request_invalid_json(self, network_manager):
-        url = "https://example.com"
         with patch("requests.get") as mock_get:
             mock_response = mock_get.return_value
             mock_response.status_code = 200
             mock_response.json.side_effect = ValueError("Invalid JSON")
-            result = network_manager.get_request(url)
+            result = network_manager.get_request()
             assert result is None
 
 

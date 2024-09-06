@@ -2,10 +2,13 @@ import requests
 import json
 
 class NetworkManager:
-   
-    def get_request(self, url):
+
+    def __init__(self, url):
+        self.url = url    
+
+    def get_request(self):
         try:
-            response = requests.get(url)
+            response = requests.get(self.url)
             response.raise_for_status()
             return response.json()
         except (requests.exceptions.RequestException, ValueError) as e:
@@ -45,7 +48,10 @@ class NetworkManager:
         return res_hero
     
     def get_the_tallest_hero(self, gender, has_work):
-        heroes = self.get_request("https://akabab.github.io/superhero-api/api/all.json")
+        heroes = self.get_request()
         filtered_heroes = self.filter_heroes(heroes, gender, has_work)
         tallest_hero = self.find_max(filtered_heroes)
         return tallest_hero
+
+
+
