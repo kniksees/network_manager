@@ -11,7 +11,7 @@
 2. Клонируйте репозиторий: `git clone https://github.com/kniksees/network_manager`.
 3. Перейдите в папку проекта: `cd network_manager`.
 4. Используйте:
-   - `pytest test_network_manager.py` для запуска простого тестов.
+   - `pytest test_network_manager.py` для простого запуска тестов.
    - `pytest --cov=network_manager test_network_manager.py` если у вас установлен pytest-cov и вам нужен отчет о покрытии.
    - `pytest --alluredir=./reports` and `allure serve ./reports` чтобы посмотреть отчет в allure.
 ### Покрытие:
