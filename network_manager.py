@@ -15,6 +15,8 @@ class NetworkManager:
             return None
     
     def filter_heroes(self, heroes, gender, has_work):
+        if heroes is None:
+            return None
         filtered_heroes = [
             hero for hero in heroes
             if  "appearance" in hero and "gender" in hero["appearance"] and
@@ -25,6 +27,8 @@ class NetworkManager:
         return filtered_heroes
     
     def find_max(self, filtered_heroes):
+        if filtered_heroes is None:
+            return None
         max_height = 0
         res_hero = None
         for hero in filtered_heroes:
