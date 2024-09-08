@@ -97,10 +97,14 @@ class TestNetworkManager:
             result = network_manager.get_the_tallest_hero(gender, has_work)
             if has_work:
                 with allure.step(f"Результат: {result}"):
-                    assert result is None or ("work" in result and "occupation" in result["work"] and "base" in result["work"] and (result["work"]["occupation"] != "-" or result["work"]["base"] != "-"))
+                    assert result is None or ("work" in result and "occupation" in result["work"] and "base" in result["work"]
+                                               and (result["work"]["occupation"] != "-" or result["work"]["base"] != "-")
+                                               and "appearance" in result and "height" in result["appearance"])
             else:
                 with allure.step(f"Результат: {result}"):
-                    assert result is None or ("work" in result and "occupation" in result["work"] and "base" in result["work"] and (result["work"]["occupation"] == "-" and result["work"]["base"] == "-"))
+                    assert result is None or ("work" in result and "occupation" in result["work"] and "base" in result["work"]
+                                               and (result["work"]["occupation"] == "-" and result["work"]["base"] == "-")
+                                               and "appearance" in result and "height" in result["appearance"])
                             
 
     @allure.story("Тест функции filter_heroes с моками")
