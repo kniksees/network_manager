@@ -19,6 +19,8 @@ MOCK_HEROES_DATA = [
 
 MOCK_EMPTY_HEROES_DATA = []
 
+MOCK_NONE_HEROES_DATA = None
+
 MOCK_SAME_HEROES_DATA = [
     {"id":  1, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}},
     {"id":  2, "appearance": {"gender": "male",     "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}},
@@ -59,6 +61,7 @@ class TestNetworkManager:
         ("male",                False,  None,   MOCK_EMPTY_HEROES_DATA),  
         ("male",                False,  1,      MOCK_SAME_HEROES_DATA),  
         ("male",                False,  1,      MOCK_ONE_ELEMENT_HEROES_DATA),  
+        ("male",                False,  None,   MOCK_NONE_HEROES_DATA),  
     ])   
     def test_get_the_tallest_hero_with_mock(self, network_manager, gender, has_work, expected_hero_id, heroes_data):
         with allure.step("Мокаем запрос к серверу"):
@@ -101,21 +104,23 @@ class TestNetworkManager:
 
     @allure.story("Тест функции filter_heroes с моками")
     @pytest.mark.parametrize(
-    "gender, has_work, expected_result",
+    "gender, has_work, expected_result, heroes_data",
     [
-        ("male",                False,  [{"id":  1, "appearance": {"gender": "male",    "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}]),  
-        ("male",                True,   [{"id":  2, "appearance": {"gender": "male",    "height": ["-", "1 meters"]},   "work": {"occupation": "true",  "base": "true"}}]),
-        ("female",              False,  [{"id":  3, "appearance": {"gender": "female",  "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}]),
-        ("female",              True,   [{"id":  4, "appearance": {"gender": "female",  "height": ["-", "1 meters"]},   "work": {"occupation": "true",  "base": "true"}}]),
-        ("-",                   False,  [{"id":  5, "appearance": {"gender": "-",       "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}]),
+        ("male",                False,  [{"id":  1, "appearance": {"gender": "male",    "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}],     MOCK_HEROES_DATA),  
+        ("male",                True,   [{"id":  2, "appearance": {"gender": "male",    "height": ["-", "1 meters"]},   "work": {"occupation": "true",  "base": "true"}}],  MOCK_HEROES_DATA),
+        ("female",              False,  [{"id":  3, "appearance": {"gender": "female",  "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}],     MOCK_HEROES_DATA),
+        ("female",              True,   [{"id":  4, "appearance": {"gender": "female",  "height": ["-", "1 meters"]},   "work": {"occupation": "true",  "base": "true"}}],  MOCK_HEROES_DATA),
+        ("-",                   False,  [{"id":  5, "appearance": {"gender": "-",       "height": ["-", "99 cm"]},      "work": {"occupation": "-",     "base": "-"}}],     MOCK_HEROES_DATA),
         ("-",                   True,   [{"id":  6, "appearance": {"gender": "-",       "height": ["-", "1 meters"]},   "work": {"occupation": "true",  "base": "true"}},
-                                         {"id": 10, "appearance": {"gender": "-",       "height": ["-", "1 kg"]},       "work": {"occupation": "true",  "base": "true"}}]),
-        ("nonexistent_gender",  False,  []),
-        ("nonexistent_gender",  True,   []),
+                                         {"id": 10, "appearance": {"gender": "-",       "height": ["-", "1 kg"]},       "work": {"occupation": "true",  "base": "true"}}],  MOCK_HEROES_DATA),
+        ("nonexistent_gender",  False,  [],                                                                                                                                 MOCK_HEROES_DATA),
+        ("nonexistent_gender",  True,   [],                                                                                                                                 MOCK_HEROES_DATA),
+        ("male",                True,   [],                                                                                                                                 MOCK_EMPTY_HEROES_DATA),
+        ("male",                True,   None,                                                                                                                               MOCK_NONE_HEROES_DATA),
     ])   
-    def test_filter_heroes_with_mock(self, network_manager, gender, has_work, expected_result):
+    def test_filter_heroes_with_mock(self, network_manager, gender, has_work, expected_result, heroes_data):
         with allure.step(f"Пол: {gender}, работа: {has_work}, ожидаемый id: {expected_result}"):
-            result = network_manager.filter_heroes(MOCK_HEROES_DATA, gender, has_work)
+            result = network_manager.filter_heroes(heroes_data, gender, has_work)
             with allure.step(f"Результат: {result}"):
                 assert result == expected_result
 
