@@ -54,12 +54,4 @@ class NetworkManager:
         return tallest_hero
 
 
-'''
-nm = NetworkManager("https://akabab.github.io/superhero-api/api/all.json")
-print(nm.get_the_tallest_hero("male", False)["id"])
-print(nm.get_the_tallest_hero("male", True)["id"])
-print(nm.get_the_tallest_hero("female", False)["id"])
-print(nm.get_the_tallest_hero("female", True)["id"])
-print(nm.get_the_tallest_hero("-", False)["id"])
-print(nm.get_the_tallest_hero("-", True)["id"])
-'''
+
