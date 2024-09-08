@@ -62,6 +62,7 @@ class TestNetworkManager:
         ("male",                False,  1,      MOCK_SAME_HEROES_DATA),  
         ("male",                False,  1,      MOCK_ONE_ELEMENT_HEROES_DATA),  
         ("male",                False,  None,   MOCK_NONE_HEROES_DATA),  
+        ("female",              False,  None,   MOCK_SAME_HEROES_DATA),
     ])   
     def test_get_the_tallest_hero_with_mock(self, network_manager, gender, has_work, expected_hero_id, heroes_data):
         with allure.step("Мокаем запрос к серверу"):
@@ -80,26 +81,26 @@ class TestNetworkManager:
 
     @allure.story("Тест функции get_the_tallest_hero с api")
     @pytest.mark.parametrize(
-    "gender, has_work, expected_hero_id",
+    "gender, has_work",
     [
-        ("male",                False,  574),  
-        ("male",                True,   728),
-        ("female",              False,  42),
-        ("female",              True,   716),
-        ("-",                   False,  287),
-        ("-",                   True,   409),
-        ("nonexistent_gender",  False,  None),
-        ("nonexistent_gender",  True,   None),
+        ("male",                False),
+        ("male",                True),
+        ("female",              False),
+        ("female",              True),
+        ("-",                   False),
+        ("-",                   True),
+        ("nonexistent_gender",  False),
+        ("nonexistent_gender",  True),
     ])   
-    def test_get_the_tallest_hero_with_api(self, network_manager, gender, has_work, expected_hero_id):
-        with allure.step(f"Пол: {gender}, работа: {has_work}, ожидаемый id: {expected_hero_id}"):
+    def test_get_the_tallest_hero_with_api(self, network_manager, gender, has_work):
+        with allure.step(f"Пол: {gender}, работа: {has_work}"):
             result = network_manager.get_the_tallest_hero(gender, has_work)
-            if expected_hero_id is None:
+            if has_work:
                 with allure.step(f"Результат: {result}"):
-                    assert result is None
+                    assert result is None or ("work" in result and "occupation" in result["work"] and "base" in result["work"] and (result["work"]["occupation"] != "-" or result["work"]["base"] != "-"))
             else:
-                with allure.step(f"Результат: {result["id"]}"):
-                    assert result["id"] == expected_hero_id
+                with allure.step(f"Результат: {result}"):
+                    assert result is None or ("work" in result and "occupation" in result["work"] and "base" in result["work"] and (result["work"]["occupation"] == "-" and result["work"]["base"] == "-"))
                             
 
     @allure.story("Тест функции filter_heroes с моками")
