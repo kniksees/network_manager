@@ -13,7 +13,7 @@
 4. Используйте:
    - `pytest test_network_manager.py` для простого запуска тестов.
    - `pytest --cov=network_manager test_network_manager.py` если у вас установлен pytest-cov и вам нужен отчет о покрытии.
-   - `pytest --alluredir=./reports` and `allure serve ./reports` чтобы посмотреть отчет в allure.
+   - `pytest --alluredir=./reports` и `allure serve ./reports` чтобы посмотреть отчет в allure.
 ### Покрытие:
 <img width="502" alt="Screenshot 2024-09-08 at 23 26 01" src="https://github.com/user-attachments/assets/9f9c9c3b-3207-470c-8e7a-d7c7446d330b">
 
